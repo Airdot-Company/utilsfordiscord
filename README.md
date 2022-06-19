@@ -47,10 +47,11 @@ const img = await paintfordiscord.generateLeaderboard([{
 
 ## Changelog
 > **Note**
-> Format: fixes -> additions -> updates
+> Format: fixes -> additions -> updates -> removals
 
 ### 6/19/2022
 * WIP - Add multilingual support
 * Add Github workflow
 * Update README.md
 * Update tests
+* Update `tsconfig.json`

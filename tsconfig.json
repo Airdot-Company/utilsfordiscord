@@ -10,8 +10,6 @@
         "sourceMap": true,
         "outDir": "./dist/",
         "baseUrl": ".",
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
         "declaration": true,
     },
     "exclude": [
