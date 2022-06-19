@@ -1,6 +1,6 @@
 {
   "name": "paintfordiscord",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "🎨 Canvas templates for Discord",
   "main": "dist/index.js",
   "devDependencies": {
@@ -19,7 +19,11 @@
     "discord",
     "discord.js",
     "discord-canvas",
-    "canvas"
+    "canvas",
+    "paintfordiscord",
+    "discord-paint",
+    "paint",
+    "canvacord"
   ],
   "author": "Turtlepaw",
   "license": "MIT",
