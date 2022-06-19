@@ -13,7 +13,7 @@
 ## Features
 - 🎨 Canvas only, no third-party libraries
 - 📦 Easy to install & use
-- 📝 Multilingual
+- [~~📝 Multilingual~~](#6192022)
 ## Installation
 
 ```bash
@@ -50,7 +50,7 @@ const img = await paintfordiscord.generateLeaderboard([{
 > Format: fixes -> additions -> updates -> removals
 
 ### 6/19/2022
-* WIP - Add multilingual support
+* ~~WIP - Add multilingual support~~ removed due to an error - coming soon
 * Add Github workflow
 * Update README.md
 * Update tests
