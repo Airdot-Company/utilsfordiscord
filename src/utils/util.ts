@@ -1,5 +1,7 @@
 import { Canvas } from "canvas";
-import { LeaderboardMember } from "src/templates/leaderboard";
+import { LeaderboardMember } from "../templates/leaderboard";
+import en from "../lang/en.json";
+import { lang } from "../index";
 
 export function applyText(canvas: Canvas, text: string){
     const context = canvas.getContext('2d');
@@ -69,4 +71,12 @@ export function leaderboardChecks(v: LeaderboardMember): { reason?: string, vali
     return {
         valid: true
     };
+}
+
+export function useText(text: keyof typeof en){
+    const languages = {
+        en: en
+    };
+
+    return languages[lang][text];
 }
