@@ -55,3 +55,4 @@ const img = await paintfordiscord.generateLeaderboard([{
 * Update README.md
 * Update tests
 * Update `tsconfig.json`
+* Update tests to have 5 users

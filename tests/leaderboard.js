@@ -8,9 +8,26 @@ module.exports = async () => {
 
     try {
         await paintfordiscord.generateLeaderboard([{
-            username: 'test-user',
-            score: 10
-        }]);
+                username: 'test-user',
+                score: 10
+            },
+            {
+                username: 'user name',
+                score: 15
+            },
+            {
+                username: 'loooooooooooooooooooooooooooooooooooooooooooooooooooong username',
+                score: 1
+            },
+            {
+                username: "test-user",
+                score: 2
+            },
+            {
+                username: "test-user",
+                score: 3
+            }
+        ]);
     } catch(e) {
         console.log(e);
     }
