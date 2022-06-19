@@ -6,5 +6,14 @@ module.exports = async () => {
         score: 100
     }]);
 
+    try {
+        await paintfordiscord.generateLeaderboard([{
+            username: 'test-user',
+            score: 10
+        }]);
+    } catch(e) {
+        console.log(e);
+    }
+
     return img;
 }

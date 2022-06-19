@@ -1,5 +1,6 @@
 import Canvas from "canvas";
-import { applyText, useUsername } from "../utils/util";
+import { pfdError } from "../utils/Errors";
+import { applyText, checkAll, isHex, isNull, isURL, leaderboardChecks, use, useUsername } from "../utils/util";
 
 export interface LeaderboardMember {
     /**
@@ -29,12 +30,31 @@ export interface LeaderboardMember {
     avatarURL?: string;
 }
 
-export default async function Leaderboard(leaderboard: LeaderboardMember[]){
-        //Return if there's no leaderboard
-        if(!leaderboard) throw new Error("No leaderboard provided");
+export interface LeaderboardOptions {
+    /**
+     * The text color of the users. **MUST** be a hex.
+     */
+    textColor?: string;
+    /**
+     * The background image of the leaderboard. **MUST** be a URL.
+     */
+    backgroundURL?: string;
+}
+
+export default async function Leaderboard(leaderboard: LeaderboardMember[], options: LeaderboardOptions = { }){
+        //Error messages
+        if(!leaderboard) throw new pfdError("No leaderboard provided");
+        if(!leaderboard.length) throw new pfdError("No members in leaderboard");
+        if(!isNull(options.textColor) && !isHex(options.textColor)) throw new pfdError("Invalid text color");
+        if(!isNull(options.backgroundURL) && !isURL(options.backgroundURL)) throw new pfdError("Invalid background URL");
+        const leaderboardCheck = checkAll<LeaderboardMember>(
+            leaderboard,
+            leaderboardChecks
+        );
+        if(!leaderboardCheck.valid) throw new pfdError(`Invalid leaderboard member: ${leaderboardCheck.reason}`);
     
         //Load all files
-        const backgroundFile = "./src/images/background.png";
+        const backgroundFile = use(options.backgroundURL, "./src/images/background.png");
         const backgroundFileAvatar = "./src/images/avatar_background.png";
         const backgroundAvatar = await Canvas.loadImage(backgroundFileAvatar);
         const background = await Canvas.loadImage(backgroundFile);
@@ -73,7 +93,7 @@ export default async function Leaderboard(leaderboard: LeaderboardMember[]){
             //Add their username or nickname
             context.font = applyText(canvas, `${availbleUsername}`);
             //Select the text color
-            context.fillStyle = '#ffffff';
+            context.fillStyle = use(options.textColor, '#ffffff');
             //Paint it on
             context.fillText(`${availbleUsername}`, poses.defualt.text.x, posData.text);
     
