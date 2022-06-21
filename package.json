@@ -13,7 +13,8 @@
     "build": "rm -rf dist/ & tsc",
     "test": "node ./tests/index.js",
     "dev": "yarn build && yarn test",
-    "install": "yarn build"
+    "install": "yarn build",
+    "publish": "npm version patch && npm publish"
   },
   "repository": {
     "type": "git",
