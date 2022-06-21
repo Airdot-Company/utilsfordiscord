@@ -85,7 +85,7 @@ export class Pages {
         return this;
     }
 
-    setButtonStyles(buttons: PageButtons) {
+    setButtons(buttons: PageButtons) {
         this.buttons = {
             ...buttons,
             ...this.buttons
@@ -126,7 +126,7 @@ export class Pages {
             return button;
         })
     }
-    async send(interaction: Interaction, options: SendOptions) {
+    async send(interaction: Interaction, options?: SendOptions) {
         const { buttons, embeds } = this;
         let pageIndex = 0;
 
