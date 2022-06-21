@@ -8,7 +8,8 @@ import {
     InteractionType,
     Message,
     ComponentType,
-    ButtonStyle
+    ButtonStyle,
+    AnyInteraction
 } from "discord.js";
 import { ufdError } from "../utils/Error";
 import { generateId } from "../utils";
@@ -126,7 +127,7 @@ export class Pages {
             return button;
         })
     }
-    async send(interaction: Interaction, options?: SendOptions) {
+    async send(interaction: AnyInteraction, options?: SendOptions) {
         const { buttons, embeds } = this;
         let pageIndex = 0;
 
