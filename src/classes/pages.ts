@@ -9,7 +9,8 @@ import {
     Message,
     ComponentType,
     ButtonStyle,
-    AnyInteraction
+    AnyInteraction,
+    CommandInteraction
 } from "discord.js";
 import { ufdError } from "../utils/Error";
 import { generateId } from "../utils";
@@ -127,7 +128,7 @@ export class Pages {
             return button;
         })
     }
-    async send(interaction: AnyInteraction, options?: SendOptions) {
+    async send(interaction: AnyInteraction | Interaction | CommandInteraction | any, options?: SendOptions) {
         const { buttons, embeds } = this;
         let pageIndex = 0;
 
@@ -166,7 +167,6 @@ export class Pages {
         let message: Message;
 
         if (interaction.type == InteractionType.ApplicationCommand || interaction.type == InteractionType.MessageComponent) {
-            //@ts-expect-error
             message = await interaction.reply({
                 fetchReply: true,
                 ...payload
