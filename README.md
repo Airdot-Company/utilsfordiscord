@@ -1,5 +1,5 @@
 <div align="center">
-<img src="images/utilsfordiscord.svg" width="150px"/>
+<img src="/images/utilsfordiscord.svg" width="150px"/>
 
 ## Utils for Discord
 🛠️ Handy utilities for Discord bots.
@@ -34,7 +34,7 @@ yarn add utilsfordiscord
 ## Examples
 
 ### Pages
-![Pages](images/95wDh6wLe6.gif)
+![Pages](/images/95wDh6wLe6.gif)
 
 ```js
 new Utils.Pages()
