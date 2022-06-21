@@ -11,6 +11,7 @@
         "outDir": "./dist/",
         "baseUrl": ".",
         "declaration": true,
+        "declarationMap": true
     },
     "exclude": [
         "node_modules",

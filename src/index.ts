@@ -1,5 +1,17 @@
-import generateLeaderboard from "./templates/leaderboard";
+import { 
+    BasePageButtons,
+    ButtonOptions,
+    PageButtons,
+    PageOptions,
+    SendOptions,
+    Pages
+} from "./classes/pages";
 
 export {
-    generateLeaderboard
+    BasePageButtons,
+    ButtonOptions,
+    PageButtons,
+    PageOptions,
+    SendOptions,
+    Pages
 }
