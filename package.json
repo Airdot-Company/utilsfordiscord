@@ -1,6 +1,6 @@
 {
   "name": "utilsfordiscordjs",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "🛠️ Handy utilities for Discord bots.",
   "main": "dist/index.js",
   "devDependencies": {
