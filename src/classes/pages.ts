@@ -63,7 +63,7 @@ export class Pages {
     /**
      * This will be on the next row.
      */
-    public components: ActionRowBuilder[] = [];
+    public components: AnyComponentBuilder[] = [];
     private defaultButtons: BasePageButtons = {
         cancelButton: {
             label: "✕",
@@ -101,7 +101,7 @@ export class Pages {
         return this;
     }
 
-    setComponents(components: ActionRowBuilder[]) {
+    setComponents(components: AnyComponentBuilder[]) {
         this.components = components;
         return this;
     }
@@ -149,30 +149,11 @@ export class Pages {
     }
 
     private getComponents(disabled: boolean = false): APIActionRowComponent<APIMessageActionRowComponent> {
-        const row = this.components.map(e => {
-            //set the buttons in the component disabled
-            //don't use renderButtons
-
-            const buttons = e.components.map(b => {
-                if (b.data.type == ComponentType.Button){
-                    const button = ButtonBuilder.from(b as ButtonBuilder)
-                    .setDisabled(disabled);
-                    return button;
-                } else if(b.data.type == ComponentType.SelectMenu){
-                    const button = SelectMenuBuilder.from(b as SelectMenuBuilder)
-                    .setDisabled(disabled);
-                    return button;
-                }
-            });
-
-            e.setComponents(buttons);
-        });
-
         //@ts-expect-error
         return new ActionRowBuilder()
         .setComponents(
             //@ts-expect-error
-            disabled ? row : this.components
+            this.components.map(e => e.setDisabled(disabled))
         ).toJSON();
     }
 
