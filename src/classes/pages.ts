@@ -9,11 +9,15 @@ import {
     Message,
     ComponentType,
     ButtonStyle,
-    AnyInteraction,
     CommandInteraction,
     AnyComponentBuilder,
     APIActionRowComponent,
-    APIMessageActionRowComponent
+    APIMessageActionRowComponent,
+    ChatInputCommandInteraction,
+    SelectMenuInteraction,
+    ButtonInteraction,
+    ModalSubmitInteraction,
+    ContextMenuCommandInteraction
 } from "discord.js";
 import { ufdError } from "../utils/Error";
 import { generateId } from "../utils";
@@ -52,6 +56,7 @@ export interface PageOptions {
 
 }
 
+export type AnyInteraction = CommandInteraction | ChatInputCommandInteraction | SelectMenuInteraction | ButtonInteraction | ModalSubmitInteraction | ContextMenuCommandInteraction;
 export class Pages {
     public embeds: EmbedBuilder[] = [];
     /**
