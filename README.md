@@ -34,7 +34,8 @@ yarn add utilsfordiscord
 ## Examples
 
 ### Pages
-![Pages](/images/95wDh6wLe6.gif)
+![Pages][pages]
+![You can also have custom buttons][pages-buttons]
 
 ```js
 new Utils.Pages()
@@ -57,7 +58,12 @@ new Utils.Pages()
 > **Note**
 > Format: Fixes -> Additions -> Updates -> Removals
 
+### 6/24/2022
+* Add support for custom components
 ### 6/20/2022
 * Added Pages class
 * Add tests
 * Add base stuff
+
+[pages-buttons]: https://turtlepaw.is-from.space/r/Discord_PMHu5ymEsQ.png
+[pages]: https://turtlepaw.is-from.space/r/95wDh6wLe6.gif

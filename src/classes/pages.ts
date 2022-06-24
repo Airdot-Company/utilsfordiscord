@@ -10,7 +10,10 @@ import {
     ComponentType,
     ButtonStyle,
     AnyInteraction,
-    CommandInteraction
+    CommandInteraction,
+    AnyComponentBuilder,
+    APIActionRowComponent,
+    APIMessageActionRowComponent
 } from "discord.js";
 import { ufdError } from "../utils/Error";
 import { generateId } from "../utils";
@@ -42,6 +45,7 @@ export interface SendOptions {
     forceButtonsDisabled?: boolean;
     ephemeral?: boolean;
     messageOptions?: InteractionReplyOptions;
+    disableCustomButtons?: boolean;
 }
 
 export interface PageOptions {
@@ -50,6 +54,10 @@ export interface PageOptions {
 
 export class Pages {
     public embeds: EmbedBuilder[] = [];
+    /**
+     * This will be on the next row.
+     */
+    public components: AnyComponentBuilder[] = [];
     private defaultButtons: BasePageButtons = {
         cancelButton: {
             label: "✕",
@@ -84,6 +92,11 @@ export class Pages {
 
     setEmbeds(embeds: EmbedBuilder[]) {
         this.embeds = embeds;
+        return this;
+    }
+
+    setComponents(components: AnyComponentBuilder[]) {
+        this.components = components;
         return this;
     }
 
@@ -128,6 +141,16 @@ export class Pages {
             return button;
         })
     }
+
+    private getComponents(disabled: boolean = false): APIActionRowComponent<APIMessageActionRowComponent> {
+        //@ts-expect-error
+        return new ActionRowBuilder()
+        .setComponents(
+            //@ts-expect-error
+            this.components.map(e => e?.setDisabled(disabled))
+        ).toJSON();
+    }
+
     async send(interaction: AnyInteraction | Interaction | CommandInteraction | any, options?: SendOptions) {
         const { buttons, embeds } = this;
         let pageIndex = 0;
@@ -159,7 +182,8 @@ export class Pages {
             ],
             components: [
                 //@ts-expect-error
-                row
+                row,
+                this.getComponents()
             ],
             ...options?.messageOptions
         }
@@ -199,7 +223,8 @@ export class Pages {
                         //@ts-expect-error
                         row.setComponents(
                             this.renderButtons(sortedButtons, Ids, pageIndex).map(e => e.setDisabled())
-                        )
+                        ),
+                        this.getComponents(options?.disableCustomButtons == null ? true : options?.disableCustomButtons)
                     ]
                 })
                 return collect.stop();
@@ -215,7 +240,8 @@ export class Pages {
                 ],
                 components: [
                     //@ts-expect-error
-                    row
+                    row,
+                    this.getComponents()
                 ]
             }).catch(console.log);
         });

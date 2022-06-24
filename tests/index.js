@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, ButtonStyle } = require('discord.js');
 const Utils = require("../dist/index");
 require("dotenv").config();
 
@@ -45,12 +45,22 @@ client.on("interactionCreate", async i => {
     .setEmbeds([
         new Discord.EmbedBuilder()
         .setTitle("Embed 1")
-        .setDescription("This is an embed page you can put anything you want on it!"),
+        .setDescription("This is an embed page you can put anything you want on it!")
+        .setColor("Blurple"),
         new Discord.EmbedBuilder()
         .setTitle("Embed 2")
+        .setColor("Blurple")
         .setDescription("Pages also supports Discord.js v14!")
     ])
-    .send(i);
+    .setComponents([
+        new Discord.ButtonBuilder()
+        .setLabel("Learn More")
+        .setStyle(ButtonStyle.Link)
+        .setURL("https://npm.im/utilsfordiscordjs")
+    ])
+    .send(i, {
+        disableCustomButtons: false
+    });
 })
 
 client.login(process.env.TOKEN);
