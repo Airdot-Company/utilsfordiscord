@@ -1,5 +1,5 @@
 <div align="center">
-<img src="/images/utilsfordiscord.svg" width="150px"/>
+<img src="https://raw.githubusercontent.com/turtlepaws-workshop/utilsfordiscord/main/images/utilsfordiscord.svg" width="150px"/>
 
 ## Utils for Discord
 🛠️ Handy utilities for Discord bots.
