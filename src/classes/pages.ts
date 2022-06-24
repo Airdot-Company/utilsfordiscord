@@ -62,7 +62,7 @@ export class Pages {
     /**
      * This will be on the next row.
      */
-    public components: AnyComponentBuilder[] = [];
+    public components: ActionRowBuilder[] = [];
     private defaultButtons: BasePageButtons = {
         cancelButton: {
             label: "✕",
@@ -100,7 +100,7 @@ export class Pages {
         return this;
     }
 
-    setComponents(components: AnyComponentBuilder[]) {
+    setComponents(components: ActionRowBuilder[]) {
         this.components = components;
         return this;
     }
