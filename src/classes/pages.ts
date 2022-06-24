@@ -17,7 +17,8 @@ import {
     SelectMenuInteraction,
     ButtonInteraction,
     ModalSubmitInteraction,
-    ContextMenuCommandInteraction
+    ContextMenuCommandInteraction,
+    SelectMenuBuilder
 } from "discord.js";
 import { ufdError } from "../utils/Error";
 import { generateId } from "../utils";
@@ -148,11 +149,30 @@ export class Pages {
     }
 
     private getComponents(disabled: boolean = false): APIActionRowComponent<APIMessageActionRowComponent> {
+        const row = this.components.map(e => {
+            //set the buttons in the component disabled
+            //don't use renderButtons
+
+            const buttons = e.components.map(b => {
+                if (b.data.type == ComponentType.Button){
+                    const button = ButtonBuilder.from(b as ButtonBuilder)
+                    .setDisabled(disabled);
+                    return button;
+                } else if(b.data.type == ComponentType.SelectMenu){
+                    const button = SelectMenuBuilder.from(b as SelectMenuBuilder)
+                    .setDisabled(disabled);
+                    return button;
+                }
+            });
+
+            e.setComponents(buttons);
+        });
+
         //@ts-expect-error
         return new ActionRowBuilder()
         .setComponents(
             //@ts-expect-error
-            this.components.map(e => e?.setDisabled(disabled))
+            disabled ? row : this.components
         ).toJSON();
     }
 
