@@ -58,7 +58,11 @@ export interface PageOptions {
 }
 
 export type AnyInteraction = CommandInteraction | ChatInputCommandInteraction | SelectMenuInteraction | ButtonInteraction | ModalSubmitInteraction | ContextMenuCommandInteraction;
+export type EventInteraction = ButtonInteraction | SelectMenuInteraction;
+export type EventListener = (interaction: EventInteraction) => (Promise<any | void> | (any | void));
+
 export class Pages {
+    public event: EventListener = () => { };
     public embeds: EmbedBuilder[] = [];
     /**
      * This will be on the next row.
@@ -103,6 +107,14 @@ export class Pages {
 
     setComponents(components: AnyComponentBuilder[]) {
         this.components = components;
+        return this;
+    }
+
+    /**
+     * `event` will be executed once a custom component is clicked.
+     */
+    setEventListener(event: EventListener){
+        this.event = event;
         return this;
     }
 
@@ -211,6 +223,11 @@ export class Pages {
         });
 
         collect.on("collect", async i => {
+            if(!Object.values(Ids).includes(i.customId)) {
+                if(this?.event != null) this.event(i);
+                return;
+            }
+
             if (i.customId === Ids.previousButton) {
                 if (pageIndex === 0) {
                     pageIndex = embeds.length - 1
@@ -233,7 +250,11 @@ export class Pages {
                         this.getComponents(options?.disableCustomButtons == null ? true : options?.disableCustomButtons)
                     ]
                 })
-                return collect.stop();
+
+                const disableCustomButtons = options?.disableCustomButtons == null ? true : options.disableCustomButtons;
+                if(disableCustomButtons) collect.stop();
+
+                return;
             }
 
             row.setComponents(

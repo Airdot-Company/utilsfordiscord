@@ -1,7 +1,8 @@
 <div align="center">
 <img src="https://raw.githubusercontent.com/turtlepaws-workshop/utilsfordiscord/main/images/utilsfordiscord.svg" width="150px"/>
 
-## Utils for Discord
+<h3 style="font-size: 25.5px;">Utils for Discord</h2>
+
 🛠️ Handy utilities for Discord bots.
 
 ---
@@ -11,10 +12,14 @@
 <details>
     <summary>📃 Table of Contents</summary>
 
-* [Features](#features)
-* [Installation](#installation)
-* [Examples](#examples)
-* [Changelog](#changelog)
+- [Features](#features)
+- [Installation](#installation)
+- [Examples](#examples)
+  - [Pages](#pages)
+- [Roadmap](#roadmap)
+- [Changelog](#changelog)
+  - [6/24/2022](#6242022)
+  - [6/20/2022](#6202022)
 </details>
 
 ## Features
@@ -37,6 +42,8 @@ yarn add utilsfordiscord
 ![Pages][pages]
 ![You can also have custom buttons][pages-buttons]
 
+> **Note**
+> This codeblock has been shortened.
 ```js
 new Utils.Pages()
     .setEmbeds([
@@ -47,7 +54,20 @@ new Utils.Pages()
         .setTitle("Embed 2")
         .setDescription("Pages also supports Discord.js v14!")
     ])
-    .send(interaction);
+    .setComponents([
+        new Discord.ButtonBuilder()
+        .setLabel("Custom Button")
+        .setStyle(ButtonStyle.Success)
+        .setCustomId("custom-button"),
+        new Discord.ButtonBuilder()
+        .setLabel("Learn More")
+        .setStyle(ButtonStyle.Link)
+        .setURL("https://npm.im/utilsfordiscordjs")
+    ])
+    .setEventListener(i => i.reply("You clicked a custom button!"))
+    .send(i, {
+        disableCustomButtons: false
+    });
 ```
 
 ## Roadmap
@@ -60,10 +80,11 @@ new Utils.Pages()
 
 ### 6/24/2022
 * Add support for custom components
+* Add custom component events listeners
 ### 6/20/2022
 * Added Pages class
 * Add tests
 * Add base stuff
 
 [pages-buttons]: https://turtlepaw.is-from.space/r/Discord_PMHu5ymEsQ.png
-[pages]: https://turtlepaw.is-from.space/r/95wDh6wLe6.gif
+[pages]: https://turtlepaw.is-from.space/r/MpiYO9YQH6.gif
