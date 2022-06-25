@@ -62,15 +62,17 @@ client.on("interactionCreate", async i => {
         .setStyle(ButtonStyle.Link)
         .setURL("https://npm.im/utilsfordiscordjs")
     ])
-    .setEventListener(i => i.reply({
-        ephemeral: true,
-        embeds: [
-            new Discord.EmbedBuilder()
-            .setTitle("Custom Button")
-            .setColor("Blurple")
-            .setDescription("This is a custom button. You can do anything with it! You can also use the `setEventListener` function to recieve interactions for custom components.\n\n>>> **TIP**\n*You can also use select menus!*")
-        ]
-    }))
+    .setEventListener((i, r) => {
+        i.reply({
+            ephemeral: true,
+            embeds: [
+                new Discord.EmbedBuilder()
+                .setTitle("Custom Button")
+                .setColor("Blurple")
+                .setDescription("This is a custom button. You can do anything with it! You can also use the `setEventListener` function to recieve interactions for custom components.\n\n>>> **TIP**\n*You can also use select menus!*")
+            ]
+        });
+    })
     .send(i, {
         disableCustomButtons: false
     });

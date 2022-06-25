@@ -18,7 +18,10 @@ import {
     ButtonInteraction,
     ModalSubmitInteraction,
     ContextMenuCommandInteraction,
-    SelectMenuBuilder
+    SelectMenuBuilder,
+    InteractionResponse,
+    MessagePayload,
+    MessageEditOptions
 } from "discord.js";
 import { ufdError } from "../utils/Error";
 import { generateId } from "../utils";
@@ -59,7 +62,12 @@ export interface PageOptions {
 
 export type AnyInteraction = CommandInteraction | ChatInputCommandInteraction | SelectMenuInteraction | ButtonInteraction | ModalSubmitInteraction | ContextMenuCommandInteraction;
 export type EventInteraction = ButtonInteraction | SelectMenuInteraction;
-export type EventListener = (interaction: EventInteraction) => (Promise<any | void> | (any | void));
+export type EventListener = (interaction: EventInteraction, thisObject: Pages) => (Promise<any | void> | (any | void));
+export type ApplicableInteraction = CommandInteraction | ChatInputCommandInteraction | ButtonInteraction | SelectMenuInteraction | ContextMenuCommandInteraction;
+
+export function isApplicableInteraction(interaction: AnyInteraction): interaction is ApplicableInteraction {
+    return interaction instanceof CommandInteraction || interaction instanceof ChatInputCommandInteraction || interaction instanceof ButtonInteraction || interaction instanceof SelectMenuInteraction || interaction instanceof ContextMenuCommandInteraction;
+}
 
 export class Pages {
     public event: EventListener = () => { };
@@ -68,6 +76,7 @@ export class Pages {
      * This will be on the next row.
      */
     public components: AnyComponentBuilder[] = [];
+    private pageIndex: number = 0;
     private defaultButtons: BasePageButtons = {
         cancelButton: {
             label: "✕",
@@ -99,6 +108,7 @@ export class Pages {
             nextButton: 3
         }
     }
+    private message: Message;
 
     setEmbeds(embeds: EmbedBuilder[]) {
         this.embeds = embeds;
@@ -108,6 +118,15 @@ export class Pages {
     setComponents(components: AnyComponentBuilder[]) {
         this.components = components;
         return this;
+    }
+
+    /**
+     * This will most likely break your pages. Use at your own risk.
+     * This was built for the custom component event listener.
+     */
+    setContent(options: string | MessagePayload | MessageEditOptions){
+        if(this.message == null) throw new ufdError("This should be used with custom component event listners.");
+        return this.message.edit(options);
     }
 
     /**
@@ -169,9 +188,13 @@ export class Pages {
         ).toJSON();
     }
 
+    setIndex(newIndex: number){
+        this.pageIndex = newIndex;
+        return this;
+    }
+
     async send(interaction: AnyInteraction | Interaction | CommandInteraction | any, options?: SendOptions) {
-        const { buttons, embeds } = this;
-        let pageIndex = 0;
+        let { buttons, embeds, pageIndex } = this;
 
         //sort the buttons using buttons.sorted
         const sortedButtons: ButtonOptions[] = Object.keys(buttons.sorting).map(key => {
@@ -206,13 +229,15 @@ export class Pages {
             ...options?.messageOptions
         }
 
-        let message: Message;
+        let message: InteractionResponse;
 
-        if (interaction.type == InteractionType.ApplicationCommand || interaction.type == InteractionType.MessageComponent) {
+        if (isApplicableInteraction(interaction)) {
             message = await interaction.reply({
                 fetchReply: true,
                 ...payload
             });
+
+            this.message = await interaction.fetchReply();
         } else {
             throw new ufdError("Pages can only be sent to commands or message components");
         }
@@ -224,7 +249,7 @@ export class Pages {
 
         collect.on("collect", async i => {
             if(!Object.values(Ids).includes(i.customId)) {
-                if(this?.event != null) this.event(i);
+                if(this?.event != null) this.event(i, this);
                 return;
             }
 
