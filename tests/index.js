@@ -4,6 +4,11 @@ const { Routes } = require('discord-api-types/v9');
 const { SlashCommandBuilder } = require('discord.js');
 const Utils = require("../dist/index");
 require("dotenv").config();
+const logger = new Utils.Logger();
+
+logger.Info("Starting tests");
+logger.Warn("createEvent() is deprecated, use createMessage() instead");
+logger.Error("Tests failed...");
 
 const client = new Discord.Client({
     intents: [
@@ -13,8 +18,8 @@ const client = new Discord.Client({
 
 const commands = [
     new SlashCommandBuilder()
-    .setName("test")
-    .setDescription("Run tests")
+        .setName("test")
+        .setDescription("Run tests")
 ];
 
 // Place your client and guild ids here
@@ -25,32 +30,39 @@ const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
 
 (async () => {
     try {
-        console.log('Started refreshing application (/) commands.');
+        logger.Info('Started refreshing application (/) commands.');
 
         await rest.put(
             Routes.applicationGuildCommands(clientId, guildId),
             { body: commands },
         );
 
-        console.log('Successfully reloaded application (/) commands.');
+        logger.Info('Successfully reloaded application (/) commands.');
     } catch (error) {
-        console.error(error);
+        logger.Error(error);
     }
 })();
 
 client.on("interactionCreate", async i => {
-    if(!i.isChatInputCommand()) return;
+    if (!i.isChatInputCommand()) return;
 
-    new Utils.Pages()
-    .setEmbeds([
-        new Discord.EmbedBuilder()
-        .setTitle("Embed 1")
-        .setDescription("This is an embed page you can put anything you want on it!"),
-        new Discord.EmbedBuilder()
-        .setTitle("Embed 2")
-        .setDescription("Pages also supports Discord.js v14!")
-    ])
-    .send(i);
+    logger.Info("Received and executing interaction...");
+
+    try {
+        new Utils.Pages()
+            .setEmbeds([
+                new Discord.EmbedBuilder()
+                    .setTitle("Embed 1")
+                    .setDescription("This is an embed page you can put anything you want on it!"),
+                new Discord.EmbedBuilder()
+                    .setTitle("Embed 2")
+                    .setDescription("Pages also supports Discord.js v14!")
+            ])
+           .setPreset("ShowAll")
+            .send(i);
+    } catch(e){
+        logger.Error(e);
+    }
 })
 
 client.login(process.env.TOKEN);

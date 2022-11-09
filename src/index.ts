@@ -1,11 +1,9 @@
-import { 
-    BasePageButtons,
-    ButtonOptions,
-    PageButtons,
-    PageOptions,
-    SendOptions,
-    Pages
-} from "./classes/pages";
+import { Client } from "discord.js";
+import { generateId, randomNumber } from "./utils/index";
+const utils = {
+    randomNumber,
+    generateId
+}
 
 export {
     BasePageButtons,
@@ -13,5 +11,17 @@ export {
     PageButtons,
     PageOptions,
     SendOptions,
-    Pages
+    Pages,
+    PageButtonType,
+    PresetOptions,
+    Presets,
+    SortingOptions
+} from "./classes/pages";
+export {
+    LogMessage,
+    LogMessageType,
+    Logger
+} from "./plugins/logger";
+export {
+    utils
 }
