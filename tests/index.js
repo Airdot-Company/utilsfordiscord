@@ -77,3 +77,7 @@ client.on("interactionCreate", async i => {
 })
 
 client.login(process.env.TOKEN);
+
+setTimeout(() => {
+    process.exit();
+}, 60000);
