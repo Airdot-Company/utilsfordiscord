@@ -26,6 +26,7 @@ const commands = [
 const clientId = '988586195237888011';
 const guildId = '842575277249921074';
 
+console.log(process.env.TOKEN)
 const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
 
 (async () => {
