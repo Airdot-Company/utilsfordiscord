@@ -165,10 +165,13 @@ export class Pages {
     }
 
     private getComponents(disabled: boolean = false) {
-        return new ActionRowBuilder<MessageActionRowComponentBuilder>()
-            .setComponents(
-                this.components.map(e => e.setDisabled(disabled))
-            ).toJSON();
+        if (this.components == null || this.components.length == 0) return [];
+        return [
+            new ActionRowBuilder<MessageActionRowComponentBuilder>()
+                .setComponents(
+                    this.components.map(e => e.setDisabled(disabled))
+                ).toJSON()
+        ];
     }
 
     async send(interaction: AnyInteraction | Interaction | CommandInteraction | any, options?: SendOptions) {
@@ -202,7 +205,7 @@ export class Pages {
             ],
             components: [
                 row,
-                this.getComponents()
+                ...this.getComponents()
             ],
             ...options?.messageOptions
         }
@@ -247,7 +250,7 @@ export class Pages {
                         row.setComponents(
                             this.renderButtons(sortedButtons, Ids, pageIndex).map(e => e.setDisabled())
                         ),
-                        this.getComponents(options?.disableCustomButtons == null ? true : options?.disableCustomButtons)
+                        ...this.getComponents(options?.disableCustomButtons == null ? true : options?.disableCustomButtons)
                     ]
                 })
 
@@ -267,7 +270,7 @@ export class Pages {
                 ],
                 components: [
                     row,
-                    this.getComponents()
+                    ...this.getComponents()
                 ]
             }).catch(console.log);
         });

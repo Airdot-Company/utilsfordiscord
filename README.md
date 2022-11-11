@@ -78,6 +78,9 @@ new Utils.Pages()
 > **Note**
 > Format: Fixes -> Additions -> Updates -> Removals
 
+### 11/11/2022
+* Fix bug `data.components[1].components[BASE_TYPE_REQUIRED]: This field is required`
+* Remove all `//@ts-expect-error`
 ### 6/24/2022
 * Add support for custom components
 * Add custom component events listeners

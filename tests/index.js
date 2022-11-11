@@ -52,7 +52,7 @@ client.on("interactionCreate", async i => {
                 .setColor("Blurple")
                 .setDescription("Pages also supports Discord.js v14!")
         ])
-        .setComponents([
+        /*.setComponents([
             new Discord.ButtonBuilder()
                 .setLabel("Custom Button")
                 .setStyle(ButtonStyle.Success)
@@ -70,7 +70,7 @@ client.on("interactionCreate", async i => {
                     .setColor("Blurple")
                     .setDescription("This is a custom button. You can do anything with it! You can also use the `setEventListener` function to recieve interactions for custom components.\n\n>>> **TIP**\n*You can also use select menus!*")
             ]
-        }))
+        }))*/
         .send(i, {
             disableCustomButtons: false
         });
