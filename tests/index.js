@@ -13,13 +13,13 @@ const client = new Discord.Client({
 
 const commands = [
     new SlashCommandBuilder()
-    .setName("test")
-    .setDescription("Run tests")
+        .setName("test")
+        .setDescription("Run tests")
 ];
 
 // Place your client and guild ids here
 const clientId = '988586195237888011';
-const guildId = '842575277249921074';
+const guildId = '1028789308401918004'; //'842575277249921074';
 
 const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
 
@@ -39,41 +39,41 @@ const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
 })();
 
 client.on("interactionCreate", async i => {
-    if(!i.isChatInputCommand()) return;
+    if (!i.isChatInputCommand()) return;
 
     new Utils.Pages()
-    .setEmbeds([
-        new Discord.EmbedBuilder()
-        .setTitle("Embed 1")
-        .setDescription("This is an embed page you can put anything you want on it!")
-        .setColor("Blurple"),
-        new Discord.EmbedBuilder()
-        .setTitle("Embed 2")
-        .setColor("Blurple")
-        .setDescription("Pages also supports Discord.js v14!")
-    ])
-    .setComponents([
-        new Discord.ButtonBuilder()
-        .setLabel("Custom Button")
-        .setStyle(ButtonStyle.Success)
-        .setCustomId("custom-button"),
-        new Discord.ButtonBuilder()
-        .setLabel("Learn More")
-        .setStyle(ButtonStyle.Link)
-        .setURL("https://npm.im/utilsfordiscordjs")
-    ])
-    .setEventListener(i => i.reply({
-        ephemeral: true,
-        embeds: [
+        .setEmbeds([
             new Discord.EmbedBuilder()
-            .setTitle("Custom Button")
-            .setColor("Blurple")
-            .setDescription("This is a custom button. You can do anything with it! You can also use the `setEventListener` function to recieve interactions for custom components.\n\n>>> **TIP**\n*You can also use select menus!*")
-        ]
-    }))
-    .send(i, {
-        disableCustomButtons: false
-    });
+                .setTitle("Embed 1")
+                .setDescription("This is an embed page you can put anything you want on it!")
+                .setColor("Blurple"),
+            new Discord.EmbedBuilder()
+                .setTitle("Embed 2")
+                .setColor("Blurple")
+                .setDescription("Pages also supports Discord.js v14!")
+        ])
+        .setComponents([
+            new Discord.ButtonBuilder()
+                .setLabel("Custom Button")
+                .setStyle(ButtonStyle.Success)
+                .setCustomId("custom-button"),
+            new Discord.ButtonBuilder()
+                .setLabel("Learn More")
+                .setStyle(ButtonStyle.Link)
+                .setURL("https://npm.im/utilsfordiscordjs")
+        ])
+        .setEventListener(i => i.reply({
+            ephemeral: true,
+            embeds: [
+                new Discord.EmbedBuilder()
+                    .setTitle("Custom Button")
+                    .setColor("Blurple")
+                    .setDescription("This is a custom button. You can do anything with it! You can also use the `setEventListener` function to recieve interactions for custom components.\n\n>>> **TIP**\n*You can also use select menus!*")
+            ]
+        }))
+        .send(i, {
+            disableCustomButtons: false
+        });
 })
 
 client.login(process.env.TOKEN);

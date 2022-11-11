@@ -18,7 +18,11 @@ import {
     ButtonInteraction,
     ModalSubmitInteraction,
     ContextMenuCommandInteraction,
-    SelectMenuBuilder
+    SelectMenuBuilder,
+    MessageComponentBuilder,
+    MessageComponent,
+    MessageActionRowComponent,
+    MessageActionRowComponentBuilder
 } from "discord.js";
 import { ufdError } from "../utils/Error";
 import { generateId } from "../utils";
@@ -67,7 +71,7 @@ export class Pages {
     /**
      * This will be on the next row.
      */
-    public components: AnyComponentBuilder[] = [];
+    public components: MessageActionRowComponentBuilder[] = [];
     private defaultButtons: BasePageButtons = {
         cancelButton: {
             label: "✕",
@@ -105,7 +109,7 @@ export class Pages {
         return this;
     }
 
-    setComponents(components: AnyComponentBuilder[]) {
+    setComponents(components: MessageActionRowComponentBuilder[]) {
         this.components = components;
         return this;
     }
@@ -113,7 +117,7 @@ export class Pages {
     /**
      * `event` will be executed once a custom component is clicked.
      */
-    setEventListener(event: EventListener){
+    setEventListener(event: EventListener) {
         this.event = event;
         return this;
     }
@@ -140,7 +144,7 @@ export class Pages {
         return false;
     }
 
-    private renderButtons(sortedButtons: ButtonOptions[], Ids: any, pageIndex: number){
+    private renderButtons(sortedButtons: ButtonOptions[], Ids: any, pageIndex: number) {
         const { buttons, embeds } = this;
         return sortedButtons.map((e, i, a) => {
             //get the key of the button
@@ -152,7 +156,7 @@ export class Pages {
                 .setStyle(e?.style || defaultButton.style)
                 .setDisabled(this.isDisabled(key));
 
-            if(e?.emoji != null){
+            if (e?.emoji != null) {
                 button.setEmoji(e?.emoji)
             }
 
@@ -160,13 +164,11 @@ export class Pages {
         })
     }
 
-    private getComponents(disabled: boolean = false): APIActionRowComponent<APIMessageActionRowComponent> {
-        //@ts-expect-error
-        return new ActionRowBuilder()
-        .setComponents(
-            //@ts-expect-error
-            this.components.map(e => e.setDisabled(disabled))
-        ).toJSON();
+    private getComponents(disabled: boolean = false) {
+        return new ActionRowBuilder<MessageActionRowComponentBuilder>()
+            .setComponents(
+                this.components.map(e => e.setDisabled(disabled))
+            ).toJSON();
     }
 
     async send(interaction: AnyInteraction | Interaction | CommandInteraction | any, options?: SendOptions) {
@@ -189,7 +191,7 @@ export class Pages {
             pageNumberButton: generateId()
         }
 
-        const row = new ActionRowBuilder()
+        const row = new ActionRowBuilder<ButtonBuilder>()
             .setComponents(
                 this.renderButtons(sortedButtons, Ids, pageIndex)
             )
@@ -199,7 +201,6 @@ export class Pages {
                 embeds[0]
             ],
             components: [
-                //@ts-expect-error
                 row,
                 this.getComponents()
             ],
@@ -223,8 +224,8 @@ export class Pages {
         });
 
         collect.on("collect", async i => {
-            if(!Object.values(Ids).includes(i.customId)) {
-                if(this?.event != null) this.event(i);
+            if (!Object.values(Ids).includes(i.customId)) {
+                if (this?.event != null) this.event(i);
                 return;
             }
 
@@ -240,10 +241,9 @@ export class Pages {
                 } else {
                     pageIndex++
                 }
-            } else if(i.customId == Ids.cancelButton){
+            } else if (i.customId == Ids.cancelButton) {
                 i.update({
                     components: [
-                        //@ts-expect-error
                         row.setComponents(
                             this.renderButtons(sortedButtons, Ids, pageIndex).map(e => e.setDisabled())
                         ),
@@ -252,7 +252,7 @@ export class Pages {
                 })
 
                 const disableCustomButtons = options?.disableCustomButtons == null ? true : options.disableCustomButtons;
-                if(disableCustomButtons) collect.stop();
+                if (disableCustomButtons) collect.stop();
 
                 return;
             }
@@ -266,7 +266,6 @@ export class Pages {
                     embeds[pageIndex]
                 ],
                 components: [
-                    //@ts-expect-error
                     row,
                     this.getComponents()
                 ]
